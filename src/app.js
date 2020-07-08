@@ -1,16 +1,33 @@
 const express = require('express');
 const bodyParser = require('body-parser');
-const routeSetup = require('./routes');
-const Github = require('./resources/github');
+const axios = require('axios');
 
 const app = express();
 
-const setupApp = async (githubResource = new Github()) => {
-  app.use(bodyParser.json());
-  app.use('/', routeSetup(githubResource));
+app.use(bodyParser.json());
+
+app.get('/:login/followers', async (req, res) => {
+  const { login } = req.params;
+
+  let response;
+  try {
+    const { data } = await axios.get(`https://api.github.com/users/${login}`);
+    response = { followers: data.followers };
+  } catch (error) {
+    const { status, data } = error.response;
+    if (status == 404) {
+      response = { error: data };
+    } else {
+      response = { error: 'Error' };
+    }
+  }
+
+  res.json(response);
+});
 
 
-  return app;
-};
+app.get('/caralho', async (req, res) => {
+  res.json('merda');
+});
 
-module.exports = {setupApp}
+module.exports = app;
