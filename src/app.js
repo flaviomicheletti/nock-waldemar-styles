@@ -1,6 +1,6 @@
-const express = require('express');
+const express    = require('express');
 const bodyParser = require('body-parser');
-const axios = require('axios');
+const axios      = require('axios');
 
 const app = express();
 
@@ -11,8 +11,10 @@ app.get('/:login/followers', async (req, res) => {
 
   let response;
   try {
+
     const { data } = await axios.get(`https://api.github.com/users/${login}`);
     response = { followers: data.followers };
+
   } catch (error) {
     const { status, data } = error.response;
     if (status == 404) {
@@ -25,9 +27,8 @@ app.get('/:login/followers', async (req, res) => {
   res.json(response);
 });
 
-
-app.get('/caralho', async (req, res) => {
-  res.json('merda');
+app.get('/other', async (req, res) => {
+  res.json('ok');
 });
 
 module.exports = app;

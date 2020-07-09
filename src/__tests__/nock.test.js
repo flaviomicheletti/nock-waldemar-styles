@@ -7,18 +7,14 @@ describe('Github resource with nock', () => {
 
   beforeAll(async function() {
     request = supertest(app);
-    // nock.cleanAll();
+    nock.cleanAll();
   });
-
-  // afterEach(() => {
-  //   nock.cleanAll();
-  // });
 
   afterAll(async () => await closeApp());
 
   describe('nock', () => {
 
-      test('sei lá', async () => {
+      test('primeiro endpoint', async () => {
 
         nock('https://api.github.com')
           .defaultReplyHeaders({ 'access-control-allow-origin': '*' })
@@ -32,20 +28,17 @@ describe('Github resource with nock', () => {
 
       });
 
-      test('outro', async () => {
+      test('outro endpoint', async () => {
 
-        nock('/')
+        nock('/nao-existe')
           .defaultReplyHeaders({ 'access-control-allow-origin': '*' })
-          .get('qwerytqwueyrtquiweytrquity')
-          .reply(200, "FILHO DA PUTA");
+          .get('qulquer-coisa')
+          .reply(200, "sem efeito");
 
-        const response = await request.get('/caralho');
-        expect(response.body).toEqual('merda');
+        const response = await request.get('/other');
+        expect(response.body).toEqual('ok');
 
       });
-
-
-
 
   });
 });
