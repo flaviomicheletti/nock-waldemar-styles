@@ -28,7 +28,7 @@ app.get('/:login/followers', async (req, res) => {
 });
 
 app.get('/other', async (req, res) => {
-  res.json('ok');
+  res.json('ok123');
 });
 
 module.exports = app;
